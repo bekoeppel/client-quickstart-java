@@ -20,6 +20,7 @@ div#controls {
     float: left;
   }
 
+    div#controls div#setup-controls,
     div#controls div#call-controls,
     div#controls div#info {
       width: 16em;
@@ -64,6 +65,7 @@ div#controls {
     display: none;
   }
 
+    div#controls div#setup-controls input,
     div#controls div#call-controls input {
       font-family: Helvetica-LightOblique, Helvetica, sans-serif;
       font-style: oblique;
@@ -74,6 +76,7 @@ div#controls {
       display: block;
     }
 
+    div#controls div#setup-controls button,
     div#controls div#call-controls button {
       color: #fff;
       background: 0 0;

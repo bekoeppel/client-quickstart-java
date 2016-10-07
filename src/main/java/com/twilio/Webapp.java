@@ -26,10 +26,10 @@ public class Webapp {
     Faker faker = new Faker();
     
     // Create a capability token using our Twilio credentials
-    get("/token", "application/json", (request, response) -> {
-      String acctSid = System.getenv("TWILIO_ACCOUNT_SID");
-      String authToken = System.getenv("TWILIO_AUTH_TOKEN");
-      String applicationSid = System.getenv("TWILIO_TWIML_APP_SID");
+    post("/token", "application/json", (request, response) -> {
+      String acctSid = request.queryParams("acctSid");
+      String authToken = request.queryParams("authToken");
+      String applicationSid = request.queryParams("applicationSid");
       // Generate a random username for the connecting client
       String identity = faker.firstName() + faker.lastName() + faker.zipCode();
       
@@ -55,9 +55,10 @@ public class Webapp {
       TwiMLResponse twiml = new TwiMLResponse();
       try {
         String to = request.queryParams("To");
-        if (to != null) {
+        String from = request.queryParams("From");
+        if (to != null && from != null) {
           Dial dial = new Dial();
-          dial.setCallerId(System.getenv("TWILIO_CALLER_ID"));
+          dial.setCallerId(from);
 
           // wrap the phone number or client name in the appropriate TwiML verb
           // by checking if the number given has only digits and format symbols

@@ -1,7 +1,16 @@
 ﻿$(function () {
-  log('Requesting Capability Token...');
-  $.getJSON('/token')
-    .done(function (data) {
+  
+  // Bind button to setup API
+  document.getElementById('setup').onclick = function() {
+    log('Requesting Capability Token...');
+
+    var params = {
+      acctSid: document.getElementById("acctSid").value,
+      authToken: document.getElementById("authToken").value,
+      applicationSid: document.getElementById("applicationSid").value
+    };
+    
+    $.post('/token', params, function (data) {
       log('Got a token.');
       console.log('Token: ' + data.token);
 
@@ -10,6 +19,7 @@
 
       Twilio.Device.ready(function (device) {
         log('Twilio.Device Ready!');
+        document.getElementById("setup-controls").style.display = 'none';
         document.getElementById('call-controls').style.display = 'block';
       });
 
@@ -43,15 +53,14 @@
       });
 
       setClientNameUI(data.identity);
-    })
-    .fail(function () {
-      log('Could not get a token from server!');
-    });
+    }, 'json');
+  };
 
   // Bind button to make call
   document.getElementById('button-call').onclick = function () {
     // get the phone number to connect the call to
     var params = {
+      From: document.getElementById('caller-id').value,
       To: document.getElementById('phone-number').value
     };
 
